@@ -1,0 +1,80 @@
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useState } from "react";
+
+import Header from "./Header";
+import Login from "./Login";
+import Carousel from "./Carousel";
+
+import AdminLogin from "./AdminLogin";
+import AdminPanel from "./AdminPanel";
+import UserPanel from "./UserPanel";
+
+import AddProduct from "./AddProduct";
+import ViewProducts from "./ViewProducts";
+import EditProduct from "./EditProduct";
+import ManageUsers from "./ManageUsers";
+import EditUser from "./EditUser";
+import Products from "./Products";
+import ProductDetails from "./ProductDetails";
+import Checkout from "./Checkout";
+import OrderManagement from "./OrderManagement";
+
+function App() {
+
+  const [showLogin, setShowLogin] = useState(false);
+
+  const location = useLocation();
+
+  const isFullpage = location.pathname.startsWith("/admin")||location.pathname.startsWith("/product")||location.pathname.startsWith("/checkout");
+
+  return (
+    <>
+
+      
+      {!isFullpage && (
+        <Header onSignupClick={() => setShowLogin(true)} />
+      )}
+
+      <Routes>
+
+       
+        <Route
+          path="/"
+          element={
+            <>
+              <Carousel />
+              <Products/>
+
+              {showLogin && (
+                <Login onClose={() => setShowLogin(false)} />
+              )}
+            </>
+          }
+        />
+
+        
+        <Route path="/user" element={<UserPanel />} />
+
+        {/* Admin Login */}
+        <Route path="/admin-login" element={<AdminLogin />} />
+
+        {/* Admin Dashboard */}
+        <Route path="/admin" element={<AdminPanel />} />
+
+        {/* Admin Product Pages */}
+        <Route path="/admin/add" element={<AddProduct />} />
+        <Route path="/admin/view" element={<ViewProducts />} />
+        <Route path="/admin/edit/:id" element={<EditProduct />} />
+        <Route path="/admin/users"element={<ManageUsers/>}/>
+        <Route path="/admin/edit-user/:id"element={<EditUser/>}/>
+        <Route path="/product/:id"element={<ProductDetails/>}/>
+        <Route path="/checkout"element={<Checkout/>}/>
+        <Route path="/admin/orders" element={<OrderManagement />} />
+
+      </Routes>
+
+    </>
+  );
+}
+
+export default App;

@@ -1,0 +1,85 @@
+
+.otp-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+}
+
+.otp-modal {
+  background: #fff;
+  width: 620px;
+  padding: 40px 50px;
+  border-radius: 6px;
+  position: relative;
+}
+
+
+.otp-close {
+  position: absolute;
+  top: 18px;
+  right: 25px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+
+.otp-title {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.otp-subtitle {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 30px;
+}
+
+.otp-heading {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.otp-info {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.otp-change {
+  color: #c7a14a;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+
+.otp-inputs {
+  display: flex;
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.otp-inputs input {
+  width: 40px;
+  height: 35px;
+  border: none;
+  border-bottom: 2px solid #c7a14a;
+  text-align: center;
+  font-size: 18px;
+  outline: none;
+}
+
+.otp-timer {
+  font-size: 14px;
+  color: #777;
+}
+
+.otp-timer span {
+  color: #c7a14a;
+}
