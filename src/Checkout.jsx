@@ -53,7 +53,7 @@ navigate("/");
     const data = await res.json();
 
     const options = {
-      key: "rzp_test_SYDb9gIxkE4TDc", // same key here
+      key: "rzp_test_SYDb9gIxkE4TDc", 
       amount: data.amount,
       currency: "INR",
       name: "My Store",
@@ -61,7 +61,7 @@ navigate("/");
       order_id: data.id,
 
       handler: function (response) {
-        // ✅ On success
+        
         placeOrder();
       },
 
