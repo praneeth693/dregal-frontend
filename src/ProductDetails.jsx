@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+
 function ProductDetails() {
   const { id } = useParams();
-const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  const API =
+    import.meta.env.DEV
+      ? "http://localhost:5000"
+      : "https://dregal-backend.onrender.com";
+
   const [product, setProduct] = useState(null);
- const [cart, setCart] = useState(() => {
+  const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
- const fetchProduct = async () => {
-       try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`);
+
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`${API}/api/products/${id}`);
       const data = await res.json();
       setProduct(data);
     } catch (error) {
@@ -23,18 +30,16 @@ const navigate=useNavigate();
     fetchProduct();
   }, [id]);
 
-  
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-
-const addToCart = () => {
+  const addToCart = () => {
     const existing = cart.find(
       (item) => item.productId === product._id
     );
 
-if (existing) {
+    if (existing) {
       const updatedCart = cart.map((item) =>
         item.productId === product._id
           ? { ...item, quantity: item.quantity + 1 }
@@ -51,15 +56,15 @@ if (existing) {
           image: product.image,
           quantity: 1,
         },
-   ]);
-     }
+      ]);
+    }
   };
 
   const removeItem = (id) => {
     setCart(cart.filter((item) => item.productId !== id));
   };
 
- const totalAmount = cart.reduce(
+  const totalAmount = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
@@ -68,10 +73,9 @@ if (existing) {
 
   return (
     <div style={{ display: "flex" }}>
-      
-    <div style={{ flex: 3, padding: "40px" }}>
+      <div style={{ flex: 3, padding: "40px" }}>
         <img
-          src={`http://localhost:5000/uploads/${product.image}`}
+          src={`${API}/uploads/${product.image}`}
           alt={product.title}
           style={{ width: "300px" }}
         />
@@ -96,7 +100,6 @@ if (existing) {
         </button>
       </div>
 
-      
       <div
         style={{
           flex: 1,
@@ -121,7 +124,7 @@ if (existing) {
                 }}
               >
                 <img
-                  src={`http://localhost:5000/uploads/${item.image}`}
+                  src={`${API}/uploads/${item.image}`}
                   width="60"
                   alt={item.title}
                 />
@@ -148,7 +151,7 @@ if (existing) {
             <h4>Total: ₹ {totalAmount}</h4>
 
             <button
-            onClick={()=>navigate("/checkout")}
+              onClick={() => navigate("/checkout")}
               style={{
                 width: "100%",
                 padding: "10px",
