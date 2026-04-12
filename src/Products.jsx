@@ -64,7 +64,7 @@ setProducts(data);
        >
 
               <img
-                src={`http://localhost:5000/uploads/${p.image}`}
+                src={`${import.meta.env.VITE_API_URL}/uploads/${p.image}`}
                 alt={p.title}
                 style={{
                   width: "100%",
