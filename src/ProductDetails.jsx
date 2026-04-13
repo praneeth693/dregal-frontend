@@ -8,7 +8,7 @@ function ProductDetails() {
   const API =
     import.meta.env.DEV
       ? "http://localhost:5000"
-      : "https://dregal-backend.onrender.com";
+      : "https://dreagal-backend.onrender.com";
 
   const [product, setProduct] = useState(null);
   const [cart, setCart] = useState(() => {
