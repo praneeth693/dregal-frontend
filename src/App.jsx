@@ -21,60 +21,53 @@ import OrderManagement from "./OrderManagement";
 import OrderSuccess from "./OrderSuccess";
 
 function App() {
-
   const [showLogin, setShowLogin] = useState(false);
 
   const location = useLocation();
 
-  const isFullpage = location.pathname.startsWith("/admin")||location.pathname.startsWith("/product")||location.pathname.startsWith("/checkout");
+  const isFullpage =
+    location.pathname.startsWith("/admin") ||
+    location.pathname.startsWith("/product") ||
+    location.pathname.startsWith("/checkout");
 
   return (
     <>
-
-      
       {!isFullpage && (
         <Header onSignupClick={() => setShowLogin(true)} />
       )}
 
       <Routes>
-
-       
         <Route
           path="/"
           element={
             <>
               <Carousel />
-              <Products/>
-
-              {showLogin && (
-                <Login onClose={() => setShowLogin(false)} />
-              )}
+              <Products />
             </>
           }
         />
 
-        
         <Route path="/user" element={<UserPanel />} />
 
-        {/* Admin Login */}
         <Route path="/admin-login" element={<AdminLogin />} />
 
-        {/* Admin Dashboard */}
         <Route path="/admin" element={<AdminPanel />} />
 
-        {/* Admin Product Pages */}
         <Route path="/admin/add" element={<AddProduct />} />
         <Route path="/admin/view" element={<ViewProducts />} />
         <Route path="/admin/edit/:id" element={<EditProduct />} />
-        <Route path="/admin/users"element={<ManageUsers/>}/>
-        <Route path="/admin/edit-user/:id"element={<EditUser/>}/>
-        <Route path="/product/:id"element={<ProductDetails/>}/>
-        <Route path="/checkout"element={<Checkout/>}/>
+        <Route path="/admin/users" element={<ManageUsers />} />
+        <Route path="/admin/edit-user/:id" element={<EditUser />} />
+
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin/orders" element={<OrderManagement />} />
         <Route path="/order-success" element={<OrderSuccess />} />
-
       </Routes>
 
+      {showLogin && (
+        <Login onClose={() => setShowLogin(false)} />
+      )}
     </>
   );
 }
