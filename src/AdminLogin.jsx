@@ -8,7 +8,7 @@ function AdminLogin() {
   const API =
     import.meta.env.DEV
       ? "http://localhost:5000"
-      : "https://dreagal-backend.onrender.com";
+      : "https://dregal-backend.onrender.com";
 
   const handleLogin = async () => {
     try {
