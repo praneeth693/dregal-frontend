@@ -18,6 +18,7 @@ import Products from "./Products";
 import ProductDetails from "./ProductDetails";
 import Checkout from "./Checkout";
 import OrderManagement from "./OrderManagement";
+import OrderSuccess from "./pages/OrderSuccess";
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
         <Route path="/product/:id"element={<ProductDetails/>}/>
         <Route path="/checkout"element={<Checkout/>}/>
         <Route path="/admin/orders" element={<OrderManagement />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
 
       </Routes>
 

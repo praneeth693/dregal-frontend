@@ -1,0 +1,25 @@
+.container {
+  text-align: center;
+  padding: 50px;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 10px;
+  margin-top: 15px;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.download-btn {
+  background-color: green;
+}
+
+.home-btn {
+  background-color: blue;
+}

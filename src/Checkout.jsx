@@ -43,6 +43,8 @@ function Chekout() {
       body: JSON.stringify(order),
     });
 
+    localStorage.setItem("lastOrder", JSON.stringify(order));
+
     const existingOrders =
       JSON.parse(localStorage.getItem("orders")) || [];
 
@@ -54,7 +56,7 @@ function Chekout() {
     localStorage.removeItem("cart");
 
     alert("order placed successfully!");
-    navigate("/");
+    navigate("/order-success");
   };
 
   const handlePayment = async () => {
