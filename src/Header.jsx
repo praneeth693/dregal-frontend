@@ -1,20 +1,21 @@
-
 import "./Header.css";
 
 function Header({ onSignupClick }) {
-  const user=JSON.parse(localStorage.getItem("user"));
-  const handleChange=(e)=>{
-    if(e.target.value==="logout"){
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleChange = (e) => {
+    if (e.target.value === "logout") {
       localStorage.removeItem("user");
       window.location.reload();
     }
-    if(e.target.value==="profile"){
+    if (e.target.value === "profile") {
       alert("profile page coming soon");
     }
-    if(e.target.value==="orders"){
+    if (e.target.value === "orders") {
       alert("Order page coming soon");
     }
   };
+
   return (
     <>
       <div className="top-bar">
@@ -42,36 +43,29 @@ function Header({ onSignupClick }) {
         />
 
         <div className="nav-actions">
-          {/* <button 
-            className="signup-btn"
-            onClick={onSignupClick}
-          >
-            SIGN UP / SIGN IN
-          </button> */}
-          {user ?(
-            
-           <div className="account-section">
-            <div className="account-icon">
-              {"\u{1F464}"}
-              </div>
-              <select className="account-select"
-              onChange={handleChange}
-              defaultValue=""
+          {user ? (
+            <div className="account-section">
+              <div className="account-icon">{"\u{1F464}"}</div>
+
+              <select
+                className="account-select"
+                onChange={handleChange}
+                defaultValue=""
               >
-                <option value=""disabled>
+                <option value="" disabled>
                   Account
                 </option>
                 <option value="profile">Profile</option>
                 <option value="orders">Orders</option>
                 <option value="logout">Logout</option>
               </select>
-              
-              </div>
-          ):(
-            <button className="signup-btn"onClick={onSignupClick}>
-              SIGN UP / SOGN IN
+            </div>
+          ) : (
+            <button className="signup-btn" onClick={onSignupClick}>
+              SIGN UP / SIGN IN
             </button>
           )}
+
           <span>♡ Favourites</span>
           <span>👜 Basket</span>
         </div>
