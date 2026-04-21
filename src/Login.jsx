@@ -1,50 +1,118 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import "./Login.css";
+import Otp from "./Otp";
+import AdminLogin from "./AdminLogin";
 
-function AdminLogin() {
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+function Login({ onClose }) {
+  const [mode, setMode] = useState("select");
+  const [mobile, setMobile] = useState("");
+  const [showOtp, setShowOtp] = useState(false);
 
   const API = "https://dreagal-backend.onrender.com";
 
-  const handleLogin = async () => {
+  const handleContinue = async () => {
     try {
-      const response = await fetch(`${API}/api/admin/login`, {
+      const response = await fetch(`${API}/api/auth/send-otp`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mobile }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        localStorage.setItem("adminAuth", "true");
-        navigate("/admin");
+        setShowOtp(true);
       } else {
-        alert("Wrong Password");
+        alert(data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("Server error");
     }
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "50px" }}>
-      <h2>Admin Login</h2>
+    <>
+      <div className="login-overlay">
+        <div className="login-box">
 
-      <input
-        type="password"
-        placeholder="Enter Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+          <span className="login-close" onClick={onClose}>×</span>
 
-      <br /><br />
+          {mode === "select" && (
+            <>
+              <h2>Sign Up or Sign In</h2>
 
-      <button onClick={handleLogin}>
-        Login
-      </button>
-    </div>
+              <button
+                className="continue-btn"
+                style={{ marginBottom: "15px" }}
+                onClick={() => setMode("user")}
+              >
+                USER LOGIN
+              </button>
+
+              <button
+                className="continue-btn"
+                onClick={() => setMode("admin")}
+              >
+                ADMIN LOGIN
+              </button>
+            </>
+          )}
+
+          {mode === "user" && (
+            <>
+              <h2>User Login</h2>
+
+              <b>Mobile Number</b>
+              <input
+                type="text"
+                className="login-input"
+                placeholder="Enter mobile number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+              />
+
+              <button
+                className="continue-btn"
+                onClick={handleContinue}
+              >
+                CONTINUE
+              </button>
+
+              <p
+                style={{ cursor: "pointer", marginTop: "10px" }}
+                onClick={() => setMode("select")}
+              >
+                ← Back
+              </p>
+            </>
+          )}
+
+          {mode === "admin" && (
+            <>
+              <AdminLogin />
+
+              <p
+                style={{ cursor: "pointer", marginTop: "10px" }}
+                onClick={() => setMode("select")}
+              >
+                ← Back
+              </p>
+            </>
+          )}
+
+        </div>
+      </div>
+
+      {showOtp && (
+        <Otp
+          mobile={mobile}
+          onClose={() => setShowOtp(false)}
+        />
+      )}
+    </>
   );
 }
 
-export default AdminLogin;
+export default Login;

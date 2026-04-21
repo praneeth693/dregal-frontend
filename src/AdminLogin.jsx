@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const API = "https://dreagal-backend.onrender.com";
 
   const handleLogin = async () => {
+    setError("");
     try {
       const response = await fetch(`${API}/api/admin/login`, {
         method: "POST",
@@ -15,25 +17,27 @@ function AdminLogin() {
         body: JSON.stringify({ password }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         localStorage.setItem("adminAuth", "true");
         navigate("/admin");
       } else {
-        alert("Wrong Password");
+        setError(data.message || "Wrong Password");
       }
     } catch (error) {
       console.log(error);
-      alert("Server error");
+      setError("Server error");
     }
   };
 
   return (
-    <div style={{ textAlign: "center", padding: "50px" }}>
+    <>
       <h2>Admin Login</h2>
 
       <input
         type="password"
-        placeholder="Enter Password"
+        placeholder="Enter Admin Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
@@ -43,7 +47,9 @@ function AdminLogin() {
       <button onClick={handleLogin}>
         Login
       </button>
-    </div>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </>
   );
 }
 
