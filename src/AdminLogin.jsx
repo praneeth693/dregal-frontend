@@ -6,9 +6,9 @@ function AdminLogin() {
   const navigate = useNavigate();
 
   const API =
-    import.meta.env.DEV
-      ? "http://localhost:5000"
-      : "https://dreagal-backend.onrender.com";
+    // import.meta.env.DEV
+    //   ? "http://localhost:5000"
+       "https://dreagal-backend.onrender.com";
 
 const handleLogin = async () => {
   try {
