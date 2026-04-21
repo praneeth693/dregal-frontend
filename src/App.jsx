@@ -5,7 +5,7 @@ import Header from "./Header";
 import Login from "./Login";
 import Carousel from "./Carousel";
 
-import AdminLogin from "./AdminLogin";
+
 import AdminPanel from "./AdminPanel";
 import UserPanel from "./UserPanel";
 
@@ -49,7 +49,7 @@ function App() {
 
         <Route path="/user" element={<UserPanel />} />
 
-        <Route path="/admin-login" element={<AdminLogin />} />
+       
 
         <Route path="/admin" element={<AdminPanel />} />
 
