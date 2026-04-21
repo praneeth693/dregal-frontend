@@ -18,7 +18,7 @@ import Products from "./Products";
 import ProductDetails from "./ProductDetails";
 import Checkout from "./Checkout";
 import OrderManagement from "./OrderManagement";
-import OrderSuccess from "./pages/OrderSuccess";
+import OrderSuccess from "./OrderSuccess";
 
 function App() {
 
