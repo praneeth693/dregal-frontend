@@ -13,7 +13,7 @@ function EditUser() {
 
   const fetchUser = async () => {
 
-    const res = await fetch(`http://localhost:5000/api/auth/users/${id}`);
+    const res = await fetch(`https://dreagal-backend.onrender.com${id}`);
     const data = await res.json();
 
     setUser(data);
@@ -37,7 +37,7 @@ function EditUser() {
 
   const updateUser = async () => {
 
-    await fetch(`http://localhost:5000/api/auth/users/${id}`, {
+    await fetch(`https://dreagal-backend.onrender.com/api/auth/users/${id}`, {
 
       method: "PUT",
 

@@ -6,7 +6,7 @@ function ManageUsers(){
 const navigate = useNavigate();
     const [users,setUsers]=useState([]);
     const fetchUsers=async()=>{
-        const res=await fetch("http://localhost:5000/api/auth/users");
+        const res=await fetch("https://dreagal-backend.onrender.com/api/auth/users");
         const data = await res.json();
 
   setUsers(data);
@@ -15,7 +15,7 @@ const navigate = useNavigate();
         fetchUsers();
     },[]);
     const deleteUser=async(id)=>{
-        await fetch(`http://localhost:5000/api/auth/users/${id}`,{
+        await fetch(`http://dreagal-backend.onrender.com/api/auth/users/${id}`,{
             method:"DELETE"
 
         });
@@ -24,7 +24,7 @@ const navigate = useNavigate();
 const updateUser=async (id)=>{
     const newRole=prompt("Enter the role(user/admin)");
     if(!newRole) return;
-    await fetch(`http://localhost:5000/api/auth/users/${id}`,{
+    await fetch(`http://dreagal-backend.onrender.com/api/auth/users/${id}`,{
         method:"PUT",
         headers:{
             "Content-Type":"application/json"

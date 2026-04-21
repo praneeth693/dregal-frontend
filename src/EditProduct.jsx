@@ -17,7 +17,7 @@ const { id } = useParams();
 
 
 
-    const res = await fetch(`http://localhost:5000/api/products/${id}`);
+    fetch(`https://dreagal-backend.onrender.com/api/products/${id}`);
 
     const data = await res.json();
 
@@ -55,7 +55,7 @@ const { id } = useParams();
      if(product.image){
       formData.append("image",product.image);
      }
-      const res=await fetch(`http://localhost:5000/api/products/${product._id}`,{
+      const res = await fetch(`https://dreagal-backend.onrender.com/api/products/${product._id}`,{
       method:"PUT",
       body:formData
      });

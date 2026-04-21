@@ -9,7 +9,7 @@ function ViewProducts() {
 
  const fetchProducts = async () => {
 
-  const res = await fetch("http://localhost:5000/api/products", {
+  const res = await fetch("http://dreagal-backend.onrender.com/api/products", {
     cache: "no-store"
   });
 
@@ -27,7 +27,7 @@ function ViewProducts() {
 
   const deleteProduct = async (id) => {
 
-    await fetch(`http://localhost:5000/api/products/${id}`, {
+    await fetch(`http://dreagal-backend.onrender.com/api/products/${id}`, {
       method: "DELETE"
     });
 
@@ -63,7 +63,7 @@ function ViewProducts() {
 
       <td>
         <img
-          src={`http://localhost:5000/uploads/${p.image}`}
+          src={`http://dreagal-backend.onrender.com/uploads/${p.image}`}
           width="70"
         />
       </td>

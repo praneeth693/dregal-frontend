@@ -37,7 +37,7 @@ function AddProduct() {
       formData.append("category", product.category);
       formData.append("image", product.image);
 
-      const res = await fetch("http://localhost:5000/api/products", {
+      const res = await fetch("https://dreagal-backend.onrender.com", {
         method: "POST",
         body: formData
       });
