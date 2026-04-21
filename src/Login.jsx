@@ -1,159 +1,50 @@
 import { useState } from "react";
-import "./Login.css";
-import Otp from "./Otp";
+import { useNavigate } from "react-router-dom";
 
-function Login({ onClose }) {
+function AdminLogin() {
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const [mode, setMode] = useState("select"); 
-  const [mobile, setMobile] = useState("");
-  const [showOtp, setShowOtp] = useState(false);
-  const [adminPassword, setAdminPassword] = useState("");
-  const [error,setError]=useState("");
-  
-  const handleContinue = async () => {
+  const API = "https://dreagal-backend.onrender.com";
+
+  const handleLogin = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/send-otp", {
+      const response = await fetch(`${API}/api/admin/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mobile }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        setShowOtp(true);
+        localStorage.setItem("adminAuth", "true");
+        navigate("/admin");
       } else {
-        alert(data.message);
+        alert("Wrong Password");
       }
-
     } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // ADMIN LOGIN
-  const handleAdminLogin = async () => {
-    setError("");
-    const response = await fetch("http://localhost:5000/api/admin/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ password: adminPassword }),
-    });
-
-    const data= await response.json();
-
-    if (response.ok) {
-      localStorage.setItem("adminAuth", "true");
-      window.location.href = "/admin";
-    } else {
-      setError(data.message);
+      console.log(error);
+      alert("Server error");
     }
   };
 
   return (
-    <>
-      <div className="login-overlay">
-        <div className="login-box">
+    <div style={{ textAlign: "center", padding: "50px" }}>
+      <h2>Admin Login</h2>
 
-          <span className="login-close" onClick={onClose}>×</span>
+      <input
+        type="password"
+        placeholder="Enter Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-          {/* SELECT MODE */}
-          {mode === "select" && (
-            <>
-              <h2>Sign Up or Sign In</h2>
+      <br /><br />
 
-              <button
-                className="continue-btn"
-                style={{ marginBottom: "15px" }}
-                onClick={() => setMode("user")}
-              >
-                USER LOGIN
-              </button>
-
-              <button
-                className="continue-btn"
-                onClick={() => setMode("admin")}
-              >
-                ADMIN LOGIN
-              </button>
-            </>
-          )}
-
-          {/* USER LOGIN */}
-          {mode === "user" && (
-            <>
-              <h2>User Login</h2>
-
-              <b>Mobile Number</b>
-              <input
-                type="text"
-                className="login-input"
-                placeholder="Enter mobile number"
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-              />
-
-              <button
-                className="continue-btn"
-                onClick={handleContinue}
-              >
-                CONTINUE
-              </button>
-
-              <p
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                onClick={() => setMode("select")}
-              >
-                ← Back
-              </p>
-            </>
-          )}
-
-          {/* ADMIN LOGIN */}
-          {mode === "admin" && (
-            <>
-              <h2>Admin Login</h2>
-
-              <input
-                type="password"
-                className="login-input"
-                placeholder="Enter Admin Password"
-                value={adminPassword}
-                onChange={(e) => setAdminPassword(e.target.value)}
-              />
-
-              <button
-                className="continue-btn"
-                onClick={handleAdminLogin}
-              >
-                LOGIN
-              </button>
-
-              <p
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                onClick={() => setMode("select")}
-              >
-                ← Back
-              </p>
-            </>
-          )}
-
-        </div>
-      </div>
-
-      {/* OTP MODAL */}
-      {showOtp && (
-        <Otp
-          mobile={mobile}
-          onClose={() => setShowOtp(false)}
-        />
-      )}
-    </>
+      <button onClick={handleLogin}>
+        Login
+      </button>
+    </div>
   );
 }
 
-export default Login;
+export default AdminLogin;
