@@ -22,86 +22,105 @@ function Chekout() {
   };
 
   const placeOrder = async () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const order = {
-      customer: form,
-      items: cart,
-      total: cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
-        0
-      ),
-      date: new Date().toLocaleString(),
-      status: "Pending",
-    };
+      const order = {
+        customer: form,
+        items: cart,
+        total: cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        ),
+        date: new Date().toLocaleString(),
+        status: "Pending",
+      };
 
-    await fetch(`${API}/place-order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(order),
-    });
+      await fetch(`${API}/place-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      });
 
-    localStorage.setItem("lastOrder", JSON.stringify(order));
+      localStorage.setItem("lastOrder", JSON.stringify(order));
 
-    const existingOrders =
-      JSON.parse(localStorage.getItem("orders")) || [];
+      const existingOrders =
+        JSON.parse(localStorage.getItem("orders")) || [];
 
-    localStorage.setItem(
-      "orders",
-      JSON.stringify([...existingOrders, order])
-    );
+      localStorage.setItem(
+        "orders",
+        JSON.stringify([...existingOrders, order])
+      );
 
-    localStorage.removeItem("cart");
+      localStorage.removeItem("cart");
 
-    alert("order placed successfully!");
-    navigate("/order-success");
+      alert("order placed successfully!");
+
+      setTimeout(() => {
+        navigate("/order-success");
+      }, 500);
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handlePayment = async () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    try {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const total = cart.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+      const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
 
-    const res = await fetch(`${API}/create-order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: total }),
-    });
+      const res = await fetch(`${API}/create-order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: total }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    const options = {
-      key: "rzp_test_SYDb9gIxkE4TDc",
-      amount: data.amount,
-      currency: "INR",
-      name: "My Store",
-      description: "Test Payment",
-      order_id: data.id,
+      const options = {
+        key: "rzp_test_SYDb9gIxkE4TDc",
+        amount: data.amount,
+        currency: "INR",
+        name: "My Store",
+        description: "Test Payment",
+        order_id: data.id,
 
-      handler: function () {
-        placeOrder();
-      },
+        handler: function () {
+          placeOrder();
+        },
 
-      prefill: {
-        name: form.name,
-        email: form.email,
-        contact: form.number,
-      },
+        redirect: false,
 
-      theme: {
-        color: "#3399cc",
-      },
-    };
+        modal: {
+          ondismiss: function () {},
+        },
 
-    const rzp = new window.Razorpay(options);
-    rzp.open();
+        prefill: {
+          name: form.name,
+          email: form.email,
+          contact: form.number,
+        },
+
+        theme: {
+          color: "#3399cc",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
