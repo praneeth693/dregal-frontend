@@ -1,12 +1,13 @@
 import { useState } from "react";
 import "./Login.css";
 import Otp from "./Otp";
-import AdminLogin from "./AdminLogin";
 
 function Login({ onClose }) {
   const [mode, setMode] = useState("select");
   const [mobile, setMobile] = useState("");
   const [showOtp, setShowOtp] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [error, setError] = useState("");
 
   const API = "https://dreagal-backend.onrender.com";
 
@@ -32,13 +33,38 @@ function Login({ onClose }) {
     }
   };
 
+  const handleAdminLogin = async () => {
+    setError("");
+    try {
+      const response = await fetch(`${API}/api/admin/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: adminPassword }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("adminAuth", "true");
+        window.location.href = "/admin";
+      } else {
+        setError(data.message || "Wrong Password");
+      }
+    } catch (error) {
+      console.log(error);
+      setError("Server error");
+    }
+  };
+
   return (
     <>
       <div className="login-overlay">
         <div className="login-box">
-
           <span className="login-close" onClick={onClose}>×</span>
 
+          {/* SELECT */}
           {mode === "select" && (
             <>
               <h2>Sign Up or Sign In</h2>
@@ -60,6 +86,7 @@ function Login({ onClose }) {
             </>
           )}
 
+          {/* USER LOGIN */}
           {mode === "user" && (
             <>
               <h2>User Login</h2>
@@ -73,43 +100,45 @@ function Login({ onClose }) {
                 onChange={(e) => setMobile(e.target.value)}
               />
 
-              <button
-                className="continue-btn"
-                onClick={handleContinue}
-              >
+              <button className="continue-btn" onClick={handleContinue}>
                 CONTINUE
               </button>
 
-              <p
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                onClick={() => setMode("select")}
-              >
+              <p onClick={() => setMode("select")} style={{ cursor: "pointer" }}>
                 ← Back
               </p>
             </>
           )}
 
+          {/* ADMIN LOGIN */}
           {mode === "admin" && (
             <>
-              <AdminLogin />
+              <h2>Admin Login</h2>
 
-              <p
-                style={{ cursor: "pointer", marginTop: "10px" }}
-                onClick={() => setMode("select")}
-              >
+              <input
+                type="password"
+                className="login-input"
+                placeholder="Enter Admin Password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+              />
+
+              <button className="continue-btn" onClick={handleAdminLogin}>
+                LOGIN
+              </button>
+
+              {error && <p style={{ color: "red" }}>{error}</p>}
+
+              <p onClick={() => setMode("select")} style={{ cursor: "pointer" }}>
                 ← Back
               </p>
             </>
           )}
-
         </div>
       </div>
 
       {showOtp && (
-        <Otp
-          mobile={mobile}
-          onClose={() => setShowOtp(false)}
-        />
+        <Otp mobile={mobile} onClose={() => setShowOtp(false)} />
       )}
     </>
   );
