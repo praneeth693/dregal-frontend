@@ -33,7 +33,7 @@ return(
         <div className="card-container">
 <div className="card blue">
     <h4>Products</h4>
-    <h2>{Products.length}</h2>
+    <h2>{products.length}</h2>
 
 </div>
 <div className="card orange">
