@@ -48,7 +48,7 @@ function Otp({ mobile }) {
           })
         );
 
-        navigate("/user");
+        window.location.reload();
       } else {
         alert(data.message);
       }
