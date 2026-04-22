@@ -1,8 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "./Header.css";
 
 function Header({ onSignupClick }) {
   const user = JSON.parse(localStorage.getItem("user"));
-
+const navigate=useNavigate();
   const handleChange = (e) => {
     if (e.target.value === "logout") {
       localStorage.removeItem("user");
@@ -12,7 +13,8 @@ function Header({ onSignupClick }) {
       alert("profile page coming soon");
     }
     if (e.target.value === "orders") {
-      alert("Order page coming soon");
+      navigate("/user");
+      e.target.value="";
     }
   };
 

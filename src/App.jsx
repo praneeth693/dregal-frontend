@@ -28,7 +28,8 @@ function App() {
   const isFullpage =
     location.pathname.startsWith("/admin") ||
     location.pathname.startsWith("/product") ||
-    location.pathname.startsWith("/checkout");
+    location.pathname.startsWith("/checkout")||
+      location.pathname.startsWith("/user");
 
   return (
     <>
