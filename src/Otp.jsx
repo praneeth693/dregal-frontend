@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import "./Otp.css";
 
 function Otp({ mobile }) {
-
   const [otp, setOtp] = useState(["", "", "", ""]);
+
+  const API = "https://dreagal-backend.onrender.com";
 
   const handleChange = (value, index) => {
     if (!/^[0-9]?$/.test(value)) return;
@@ -25,34 +27,43 @@ function Otp({ mobile }) {
   }, [otp]);
 
   const verifyOtp = async (finalOtp) => {
-    const response = await fetch("http://dreagal-backend.onrender.com/api/auth/verify-otp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ mobile, otp: finalOtp }),
-    });
+    try {
+      const response = await fetch(`${API}/api/auth/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mobile, otp: finalOtp }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem("user", JSON.stringify(data.user));
+      if (response.ok) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            mobile: mobile
+          })
+        );
 
-      if (data.user.role === "admin") {
-        window.location.href = "/admin-login";
-      } else {
         window.location.href = "/user";
+      } else {
+        alert(data.message);
       }
-
-    } else {
-      alert(data.message);
+    } catch (error) {
+      console.log(error);
+      alert("Server error");
     }
   };
 
   return (
-    <div className="login-overlay">
-      <div className="login-box">
-        <h2>Enter OTP</h2>
+    <div className="otp-overlay">
+      <div className="otp-modal">
+        <h2 className="otp-title">Enter OTP</h2>
+
+        <p className="otp-info">
+          OTP sent to {mobile}
+        </p>
 
         <div className="otp-inputs">
           {otp.map((digit, index) => (
