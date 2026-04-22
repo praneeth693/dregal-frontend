@@ -97,6 +97,22 @@ function AdminPanel() {
   Manage Orders
 </button>
 
+<button
+  onClick={() => navigate("/admin/stats")}
+  style={{
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#2c7be5",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  }}
+>
+  STATISTICS
+</button>
+
+
       </div>
 
     </div>
