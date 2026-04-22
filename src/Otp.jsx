@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Otp.css";
 
 function Otp({ mobile }) {
   const [otp, setOtp] = useState(["", "", "", ""]);
+    const navigate = useNavigate();
 
   const API = "https://dreagal-backend.onrender.com";
 
@@ -46,7 +48,7 @@ function Otp({ mobile }) {
           })
         );
 
-        window.location.href = "/user";
+        navigate("/user");
       } else {
         alert(data.message);
       }
