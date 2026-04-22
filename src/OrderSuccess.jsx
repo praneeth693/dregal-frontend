@@ -4,48 +4,63 @@ import { useNavigate } from "react-router-dom";
 function OrderSuccess() {
   const navigate = useNavigate();
 
-  const downloadBill = () => {
-    const order = JSON.parse(localStorage.getItem("lastOrder")); 
+ const downloadBill = () => {
+  const order = JSON.parse(localStorage.getItem("lastOrder"));
 
-    if (!order) {
-      alert("No order found");
-      return;
-    }
+  if (!order) {
+    alert("No order found");
+    return;
+  }
 
-    let subtotal = 0;
+  let subtotal = 0;
 
-    order.items.forEach((item) => {
-      subtotal += item.price * item.quantity;
-    });
+  order.items.forEach((item) => {
+    subtotal += item.price * item.quantity;
+  });
 
-    const gst = subtotal * 0.18;
-    const total = subtotal + gst;
+  const cgst = subtotal * 0.09;
+  const sgst = subtotal * 0.09;
+  const total = subtotal + cgst + sgst;
 
-    const doc = new jsPDF();
+  const doc = new jsPDF();
 
-    doc.text("Dregal Store", 20, 20); 
-    doc.text("GST Bill", 20, 30);     
+  doc.setFontSize(16);
+  doc.text("DREAGAL STORE", 20, 20);
 
-    doc.text(`Name: ${order.customer.name}`, 20, 40);
-    doc.text(`Email: ${order.customer.email}`, 20, 50);
+  doc.setFontSize(10);
+  doc.text("GSTIN: 29ABCDE1234F1Z5", 20, 28);
+  doc.text("Bangalore, India", 20, 34);
 
-    let y = 70;
+  doc.text(`Customer: ${order.customer.name}`, 20, 45);
+  doc.text(`Email: ${order.customer.email}`, 20, 52);
+  doc.text(`Date: ${order.date}`, 20, 59);
 
-    order.items.forEach((item) => {
-      doc.text(
-        `${item.title} - ${item.quantity} x ${item.price}`, 
-        20,
-        y
-      );
-      y += 10;
-    });
+  let y = 75;
 
-    doc.text(`Subtotal: ₹${subtotal}`, 20, y + 10);
-    doc.text(`GST (18%): ₹${gst}`, 20, y + 20);
-    doc.text(`Total: ₹${total}`, 20, y + 30);
+  doc.text("Item", 20, y);
+  doc.text("Qty", 100, y);
+  doc.text("Price", 120, y);
+  doc.text("Total", 150, y);
 
-    doc.save("bill.pdf");
-  };
+  y += 10;
+
+  order.items.forEach((item) => {
+    doc.text(item.title, 20, y);
+    doc.text(String(item.quantity), 100, y);
+    doc.text(String(item.price), 120, y);
+    doc.text(String(item.price * item.quantity), 150, y);
+    y += 10;
+  });
+
+  y += 10;
+
+  doc.text(`Subtotal: ₹${subtotal.toFixed(2)}`, 20, y);
+  doc.text(`CGST (9%): ₹${cgst.toFixed(2)}`, 20, y + 10);
+  doc.text(`SGST (9%): ₹${sgst.toFixed(2)}`, 20, y + 20);
+  doc.text(`Total: ₹${total.toFixed(2)}`, 20, y + 30);
+
+  doc.save("GST_Bill.pdf");
+};
 
   return (
     <div className="container">
