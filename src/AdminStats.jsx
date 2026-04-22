@@ -64,7 +64,7 @@ return(
 <XAxis dataKey="name"/>
 <YAxis/>
 <Tooltip/>
-<Line type="montone" dataKey="value"/>
+<Line type="monotone" dataKey="value"/>
 </LineChart>
 
 
