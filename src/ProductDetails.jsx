@@ -4,11 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-
-  const API =
-    import.meta.env.DEV
-      ? "http://localhost:5000"
-      : "https://dreagal-backend.onrender.com";
+const API = "https://dreagal-backend.onrender.com";
 
   const [product, setProduct] = useState(null);
   const [cart, setCart] = useState(() => {

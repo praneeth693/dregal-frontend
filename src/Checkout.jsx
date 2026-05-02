@@ -4,10 +4,7 @@ import { useNavigate } from "react-router-dom";
 function Chekout() {
   const navigate = useNavigate();
 
-  const API =
-    import.meta.env.DEV
-      ? "http://localhost:5000"
-      : "https://dreagal-backend.onrender.com";
+  const API = "https://dreagal-backend.onrender.com";
 
   const [form, setForm] = useState({
     name: "",
