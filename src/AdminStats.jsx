@@ -53,12 +53,12 @@ return(
 </div>
 </div>
 <div className="chart-container">
-<BarChart width={400} height={300} data={productData} > 
+{/* <BarChart width={400} height={300} data={productData} > 
 <XAxis dataKey="name"/>
 <YAxis/>
 <Tooltip/>
 <Bar dataKey="value"/>
-  </BarChart>
+  </BarChart> */}
 <LineChart width={400} height={300} data={orderData}>
     <CartesianGrid strokeDasharray=" 3 3"/>
 <XAxis dataKey="name"/>
