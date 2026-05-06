@@ -13,9 +13,8 @@ const navigate=useNavigate();
       alert("profile page coming soon");
     }
     if (e.target.value === "orders") {
-      navigate("/user");
-      e.target.value="";
-    }
+  window.location.href = "/orders";
+}
   };
 
   return (

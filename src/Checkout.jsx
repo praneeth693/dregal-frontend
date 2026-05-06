@@ -94,7 +94,7 @@ function Chekout() {
         handler: function () {
           placeOrder();
         },
-
+     
         redirect: false,
 
         modal: {

@@ -20,6 +20,7 @@ import Checkout from "./Checkout";
 import OrderManagement from "./OrderManagement";
 import OrderSuccess from "./OrderSuccess";
 import AdminStats from "./AdminStats";
+import UserOrders from "./UserOrders";
 
 function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -66,6 +67,7 @@ function App() {
         <Route path="/admin/orders" element={<OrderManagement />} />
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/admin/stats"element={<AdminStats/>}/>
+        <Route path="/orders" element={<UserOrders />} />
       </Routes>
 
       {showLogin && (
