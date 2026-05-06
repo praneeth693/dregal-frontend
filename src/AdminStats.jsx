@@ -31,21 +31,21 @@ return(
     <div className="container">
         <h2 className="heading">DASHBOARD</h2>
         <div className="card-container">
-<div className="card blue">
+{/* <div className="card blue">
     <h4>Products</h4>
     <h2>{products.length}</h2>
 
-</div>
+</div> */}
 <div className="card orange">
     <h4>Orders</h4>
     <h2>{orders.length}</h2>
 
 </div>
-<div className="card green">
+{/* <div className="card green">
     <h4>users</h4>
     <h2>{users.length}</h2>
 
-</div>
+</div> */}
 <div className="card red">
     <h4>Revenue</h4>
     <h2>{revenue}</h2>
