@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Chekout() {
+function Checkout() {
+
   const navigate = useNavigate();
 
   const API = "https://dreagal-backend.onrender.com";
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const [form, setForm] = useState({
     name: "",
@@ -15,33 +18,55 @@ function Chekout() {
   });
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const placeOrder = async () => {
     try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
 
       const order = {
-        customer: form,
+        customer: {
+          _id: user?._id || "",   // ✅ IMPORTANT FIX
+          name: form.name,
+          email: form.email,
+          number: form.number,
+          city: form.city,
+          address: form.address,
+        },
+
         items: cart,
+
         total: cart.reduce(
-          (sum, item) => sum + item.price * item.quantity,
+          (sum, item) =>
+            sum + item.price * item.quantity,
           0
         ),
+
         date: new Date().toLocaleString(),
+
         status: "Pending",
       };
 
       await fetch(`${API}/place-order`, {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify(order),
       });
 
-      localStorage.setItem("lastOrder", JSON.stringify(order));
+      localStorage.setItem(
+        "lastOrder",
+        JSON.stringify(order)
+      );
 
       const existingOrders =
         JSON.parse(localStorage.getItem("orders")) || [];
@@ -53,7 +78,7 @@ function Chekout() {
 
       localStorage.removeItem("cart");
 
-      alert("order placed successfully!");
+      alert("Order placed successfully!");
 
       setTimeout(() => {
         navigate("/order-success");
@@ -66,35 +91,48 @@ function Chekout() {
 
   const handlePayment = async () => {
     try {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+      const cart =
+        JSON.parse(localStorage.getItem("cart")) || [];
 
       const total = cart.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+        (sum, item) =>
+          sum + item.price * item.quantity,
         0
       );
 
       const res = await fetch(`${API}/create-order`, {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ amount: total }),
+
+        body: JSON.stringify({
+          amount: total,
+        }),
       });
 
       const data = await res.json();
 
       const options = {
+
         key: "rzp_test_SYDb9gIxkE4TDc",
+
         amount: data.amount,
+
         currency: "INR",
-        name: "My Store",
-        description: "Test Payment",
+
+        name: "Dregal Store",
+
+        description: "Order Payment",
+
         order_id: data.id,
 
         handler: function () {
           placeOrder();
         },
-     
+
         redirect: false,
 
         modal: {
@@ -113,6 +151,7 @@ function Chekout() {
       };
 
       const rzp = new window.Razorpay(options);
+
       rzp.open();
 
     } catch (error) {
@@ -121,26 +160,54 @@ function Chekout() {
   };
 
   return (
+
     <div style={{ textAlign: "center", padding: "50px" }}>
+
       <h1>Checkout</h1>
 
-      <input name="name" placeholder="Enter Name" onChange={handleChange} />
+      <input
+        name="name"
+        placeholder="Enter Name"
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input name="city" placeholder="Enter city" onChange={handleChange} />
+      <input
+        name="city"
+        placeholder="Enter City"
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input name="number" placeholder="Enter Number" onChange={handleChange} />
+      <input
+        name="number"
+        placeholder="Enter Number"
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input name="email" placeholder="Enter email" onChange={handleChange} />
+      <input
+        name="email"
+        placeholder="Enter Email"
+        onChange={handleChange}
+      />
+
       <br /><br />
 
-      <input name="address" placeholder="Enter Address" onChange={handleChange} />
+      <input
+        name="address"
+        placeholder="Enter Address"
+        onChange={handleChange}
+      />
+
       <br /><br />
 
       <button
         onClick={handlePayment}
+
         style={{
           padding: "10px 20px",
           background: "blue",
@@ -149,10 +216,11 @@ function Chekout() {
           cursor: "pointer",
         }}
       >
-        pay with razorpay
+        Pay with Razorpay
       </button>
+
     </div>
   );
 }
 
-export default Chekout;
+export default Checkout;
